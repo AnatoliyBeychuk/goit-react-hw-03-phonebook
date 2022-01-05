@@ -11,6 +11,26 @@ class App extends Component {
     filter: "",
   };
 
+  componentDidMount() {
+    const contacts = this.loadContacts();
+    if (contacts) this.setState({ contacts });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (contacts !== prevState.contacts) {
+      this.saveContacts(contacts);
+    }
+  }
+
+  loadContacts = () => {
+    return JSON.parse(localStorage.getItem("contacts"));
+  };
+
+  saveContacts = (contacts) => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  };
+
   handleInputChange = (value, name) => {
     this.setState((prevState) => {
       return { ...prevState, [name]: value };
